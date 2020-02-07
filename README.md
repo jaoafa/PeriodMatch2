@@ -5,7 +5,7 @@
 [![License](https://img.shields.io/badge/license-None-yellow.svg)](https://img.shields.io)
 [![jao Minecraft Server](https://raw.githubusercontent.com/jaoafa/jao-Minecraft-Server/master/logo/new_logo-421x97.png)](https://jaoafa.com)
 
-[jaoafa/PeriodMatch](https://github.com/jaoafa/PeriodMatch2)の後継バージョンです。
+[jaoafa/PeriodMatch](https://github.com/jaoafa/PeriodMatch)の後継バージョンです。
 
 ## 情報
 
