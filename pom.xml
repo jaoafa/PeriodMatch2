@@ -91,5 +91,11 @@
 			<version>1.7.6</version>
 			<scope>provided</scope>
 		</dependency>
+		<!-- OkHttp -->
+		<dependency>
+			<groupId>com.squareup.okhttp3</groupId>
+			<artifactId>okhttp</artifactId>
+			<version>4.1.0</version>
+		</dependency>
 	</dependencies>
 </project>

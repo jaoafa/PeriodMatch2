@@ -6,11 +6,13 @@ import org.bukkit.plugin.java.JavaPlugin;
 import com.jaoafa.PeriodMatch2.Command.Period;
 import com.jaoafa.PeriodMatch2.Event.PeriodFailureCounter;
 import com.jaoafa.PeriodMatch2.Event.PeriodSuccessCounter;
+import com.jaoafa.PeriodMatch2.Lib.Discord;
 import com.jaoafa.PeriodMatch2.Lib.MySQLDBManager;
 
 public class Main extends JavaPlugin {
 	static MySQLDBManager sqlmanager;
 	static JavaPlugin javaplugin;
+	static Discord discord = null;
 
 	/**
 	 * プラグインが起動したときに呼び出し
@@ -64,6 +66,12 @@ public class Main extends JavaPlugin {
 			return;
 		}
 
+		if (!conf.contains("discordtoken")) {
+			getLogger().warning("discordtokenが定義されていません。Discordとの連携機能を無効化します。");
+		} else {
+			discord = new Discord(conf.getString("discordtoken"));
+		}
+
 		javaplugin = this;
 
 		getCommand(".").setExecutor(new Period(this));
@@ -73,6 +81,10 @@ public class Main extends JavaPlugin {
 
 	public static MySQLDBManager getMySQLDBManager() {
 		return sqlmanager;
+	}
+
+	public static Discord getDiscord() {
+		return discord;
 	}
 
 	public static JavaPlugin getJavaPlugin() {

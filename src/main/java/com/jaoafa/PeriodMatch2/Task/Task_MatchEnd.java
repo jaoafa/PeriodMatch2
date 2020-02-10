@@ -60,10 +60,19 @@ public class Task_MatchEnd extends BukkitRunnable {
 						+ " / failureCount: " + failureCount + " / matchTime: " + matchTime);
 			}
 			player.sendMessage("[PeriodMatch2] " + ChatColor.GREEN + "お疲れさまでした！");
+
 			Bukkit.broadcastMessage("[PeriodMatch2] " + ChatColor.GREEN + player.getName() + "さんのピリオドマッチ(" + matchTime
 					+ "秒部門)が終了しました。");
+
 			Bukkit.broadcastMessage(
 					"[PeriodMatch2] " + ChatColor.GREEN + "成功回数: " + successCount + " / 失敗回数: " + failureCount);
+
+			if (Main.getDiscord() != null) {
+				Main.getDiscord().sendMessage("597423199227084800",
+						"[PeriodMatch2] " + player.getName() + "さんのピリオドマッチ(" + matchTime + "秒部門)が終了しました。");
+				Main.getDiscord().sendMessage("597423199227084800",
+						"[PeriodMatch2] 成功回数: " + successCount + " / 失敗回数: " + failureCount);
+			}
 			return;
 		} catch (SQLException e) {
 			player.sendMessage("[PeriodMatch2] " + ChatColor.GREEN + "データベースサーバに接続できなかったか、操作に失敗しました。開発部にお問い合わせください。");
