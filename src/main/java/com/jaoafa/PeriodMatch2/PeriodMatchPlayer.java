@@ -7,6 +7,7 @@ import java.util.UUID;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitTask;
 
 import com.connorlinfoot.titleapi.TitleAPI;
 import com.jaoafa.PeriodMatch2.Task.Task_MatchEnd;
@@ -21,6 +22,7 @@ public class PeriodMatchPlayer {
 	int failure = 0; // 失敗回数
 	int matchTime = -1; // マッチ時間
 	long startTime = -1; // 開始UNIXTime
+	BukkitTask mainTask = null;
 
 	public PeriodMatchPlayer(Player player) {
 		this.player = player;
@@ -44,7 +46,7 @@ public class PeriodMatchPlayer {
 		startTime = System.currentTimeMillis();
 
 		player.sendMessage("[PeriodMatch2] " + ChatColor.GREEN + "ピリオドマッチ計測を開始します。");
-		new Task_MatchEnd(player, this).runTaskLater(Main.getJavaPlugin(), matchTime * 20);
+		mainTask = new Task_MatchEnd(player, this).runTaskLater(Main.getJavaPlugin(), matchTime * 20);
 		Save();
 	}
 
@@ -53,6 +55,12 @@ public class PeriodMatchPlayer {
 	 */
 	public void forceEnd() {
 		perioding = false;
+		waiting = false;
+
+		if (mainTask != null && !mainTask.isCancelled()) {
+			mainTask.cancel();
+		}
+		mainTask = null;
 
 		player.sendMessage("[PeriodMatch2] " + ChatColor.GREEN + "ピリオドマッチ計測を強制終了しました。");
 		clearTitle();
@@ -64,6 +72,7 @@ public class PeriodMatchPlayer {
 	 */
 	public void end() {
 		perioding = false;
+		mainTask = null;
 
 		player.sendMessage("[PeriodMatch2] " + ChatColor.GREEN + "ピリオドマッチ計測を終了しました。");
 		clearTitle();
