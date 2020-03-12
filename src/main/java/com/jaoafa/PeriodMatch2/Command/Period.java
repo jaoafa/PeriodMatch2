@@ -54,12 +54,17 @@ public class Period implements CommandExecutor {
 					"[PeriodMatch2] " + ChatColor.GREEN + "正確にピリオド判定を行うため、かなローマ字変換をオフにして(/jp off)ご利用ください。");
 			return true;
 		} else if (args.length == 1) {
-			if (pmplayer.isPerioding()) {
-				player.sendMessage(
-						"[PeriodMatch2] " + ChatColor.GREEN + "現在あなたはピリオドマッチを実施中です。強制終了するには「/. stop」を実行してください。");
-				return true;
-			}
 			if (isNumber(args[0])) {
+				if (pmplayer.isPerioding()) {
+					player.sendMessage(
+							"[PeriodMatch2] " + ChatColor.GREEN + "現在あなたはピリオドマッチを実施中です。強制終了するには「/. stop」を実行してください。");
+					return true;
+				}
+				if (pmplayer.isWaiting()) {
+					player.sendMessage(
+							"[PeriodMatch2] " + ChatColor.GREEN + "現在あなたはピリオドマッチを待機中です。強制終了するには「/. stop」を実行してください。");
+					return true;
+				}
 				int sec = Integer.parseInt(args[0]);
 				pmplayer.setMatchTime(sec);
 				pmplayer.setWaiting(true);
