@@ -2,7 +2,9 @@ package com.jaoafa.PeriodMatch2.Task;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.sql.Timestamp;
 
 import org.bukkit.Bukkit;
@@ -44,7 +46,8 @@ public class Task_MatchEnd extends BukkitRunnable {
 			Connection conn = sqlmanager.getConnection();
 
 			PreparedStatement statement = conn.prepareStatement(
-					"INSERT INTO periodmatch2 (player, uuid, success, failure, match_time, real_match_time, start_time, end_time) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+					"INSERT INTO periodmatch2 (player, uuid, success, failure, match_time, real_match_time, start_time, end_time) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+					Statement.RETURN_GENERATED_KEYS);
 			statement.setString(1, player.getName());
 			statement.setString(2, player.getUniqueId().toString());
 			statement.setInt(3, successCount);
@@ -55,23 +58,36 @@ public class Task_MatchEnd extends BukkitRunnable {
 			statement.setTimestamp(8, new Timestamp(endTime));
 			int res = statement.executeUpdate();
 			if (res == 0) {
-				player.sendMessage("[PeriodMatch2] " + ChatColor.GREEN + "データの登録に失敗した恐れがあります。開発部にお問い合わせください。");
+				player.sendMessage("[PeriodMatch2] " + ChatColor.GREEN + "データの登録に失敗した恐れがあります。開発部にお問い合わせください。(1)");
+				player.sendMessage("[PeriodMatch2] " + ChatColor.GREEN + "successCount: " + successCount
+						+ " / failureCount: " + failureCount + " / matchTime: " + matchTime);
+			}
+			ResultSet res_genkey = statement.getGeneratedKeys();
+			int id = -1;
+			if (res_genkey != null && res_genkey.next()) {
+				id = res_genkey.getInt(1);
+			} else {
+				player.sendMessage("[PeriodMatch2] " + ChatColor.GREEN + "データの登録に失敗した恐れがあります。開発部にお問い合わせください。(2)");
 				player.sendMessage("[PeriodMatch2] " + ChatColor.GREEN + "successCount: " + successCount
 						+ " / failureCount: " + failureCount + " / matchTime: " + matchTime);
 			}
 			player.sendMessage("[PeriodMatch2] " + ChatColor.GREEN + "お疲れさまでした！");
+
+			int ranking = getRanking(matchTime, id);
 
 			Bukkit.broadcastMessage("[PeriodMatch2] " + ChatColor.GREEN + player.getName() + "さんのピリオドマッチ(" + matchTime
 					+ "秒部門)が終了しました。");
 
 			Bukkit.broadcastMessage(
 					"[PeriodMatch2] " + ChatColor.GREEN + "成功回数: " + successCount + " / 失敗回数: " + failureCount);
+			Bukkit.broadcastMessage("[PeriodMatch2] " + ChatColor.GREEN + "順位: " + ranking + " 位");
 
 			if (Main.getDiscord() != null) {
 				Main.getDiscord().sendMessage("597423199227084800",
 						"[PeriodMatch2] " + player.getName() + "さんのピリオドマッチ(" + matchTime + "秒部門)が終了しました。");
 				Main.getDiscord().sendMessage("597423199227084800",
 						"[PeriodMatch2] 成功回数: " + successCount + " / 失敗回数: " + failureCount);
+				Main.getDiscord().sendMessage("597423199227084800", "[PeriodMatch2] 順位: " + ranking + " 位");
 			}
 			return;
 		} catch (SQLException e) {
@@ -84,5 +100,27 @@ public class Task_MatchEnd extends BukkitRunnable {
 			e.printStackTrace();
 			return;
 		}
+	}
+
+	int getRanking(int matchTime, int id) throws SQLException {
+		MySQLDBManager sqlmanager = Main.getMySQLDBManager();
+		Connection conn = sqlmanager.getConnection();
+		PreparedStatement statement = conn.prepareStatement(
+				"SELECT *, (success+(success/(success+failure))-failure)/real_match_time AS calc FROM periodmatch2 WHERE match_time = ? ORDER BY calc DESC;");
+		statement.setInt(1, matchTime);
+		ResultSet res = statement.executeQuery();
+		int rank = 1;
+		int oldCalc = Integer.MIN_VALUE;
+		while (res.next()) {
+			if (res.getInt("id") == id) {
+				break;
+			}
+			int calc = res.getInt("calc");
+			rank++;
+			if (oldCalc != Integer.MIN_VALUE && oldCalc == calc)
+				rank--;
+			oldCalc = rank;
+		}
+		return rank;
 	}
 }
