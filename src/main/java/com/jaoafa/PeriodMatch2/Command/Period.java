@@ -52,6 +52,8 @@ public class Period implements CommandExecutor {
 					"[PeriodMatch2] " + ChatColor.GREEN + "ピリオドマッチを開始します。次に「.」を打った瞬間から60秒間計測します。");
 			player.sendMessage(
 					"[PeriodMatch2] " + ChatColor.GREEN + "正確にピリオド判定を行うため、かなローマ字変換をオフにして(/jp off)ご利用ください。");
+			player.sendMessage(
+					"[PeriodMatch2] " + ChatColor.RED + "キー設定はデフォルトで実施してください。また外部ツールなどの利用を厳しく禁止します。");
 			return true;
 		} else if (args.length == 1) {
 			if (args[0].equalsIgnoreCase("stop")) {
@@ -75,6 +77,8 @@ public class Period implements CommandExecutor {
 						"[PeriodMatch2] " + ChatColor.GREEN + "ピリオドマッチを開始します。次に「.」を打った瞬間から" + sec + "秒間計測します。");
 				player.sendMessage(
 						"[PeriodMatch2] " + ChatColor.GREEN + "正確にピリオド判定を行うため、かなローマ字変換をオフにして(/jp off)ご利用ください。");
+				player.sendMessage(
+						"[PeriodMatch2] " + ChatColor.RED + "キー設定はデフォルトで実施してください。また外部ツールなどの利用を厳しく禁止します。");
 				return true;
 			}
 		}
