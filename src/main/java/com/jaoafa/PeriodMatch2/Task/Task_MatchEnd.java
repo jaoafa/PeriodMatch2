@@ -80,14 +80,14 @@ public class Task_MatchEnd extends BukkitRunnable {
 
 			Bukkit.broadcastMessage(
 					"[PeriodMatch2] " + ChatColor.GREEN + "成功回数: " + successCount + " / 失敗回数: " + failureCount);
-			Bukkit.broadcastMessage("[PeriodMatch2] " + ChatColor.GREEN + "順位: " + ranking + " 位");
+			Bukkit.broadcastMessage("[PeriodMatch2] " + ChatColor.GREEN + "順位: " + ranking + "位");
 
 			if (Main.getDiscord() != null) {
 				Main.getDiscord().sendMessage("597423199227084800",
 						"[PeriodMatch2] " + player.getName() + "さんのピリオドマッチ(" + matchTime + "秒部門)が終了しました。");
 				Main.getDiscord().sendMessage("597423199227084800",
 						"[PeriodMatch2] 成功回数: " + successCount + " / 失敗回数: " + failureCount);
-				Main.getDiscord().sendMessage("597423199227084800", "[PeriodMatch2] 順位: " + ranking + " 位");
+				Main.getDiscord().sendMessage("597423199227084800", "[PeriodMatch2] 順位: " + ranking + "位");
 			}
 			return;
 		} catch (SQLException e) {
