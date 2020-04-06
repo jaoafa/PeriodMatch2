@@ -41,12 +41,17 @@ public class Task_MatchEnd extends BukkitRunnable {
 		int matchTime = pmplayer.getMatchTime();
 		long startTime = pmplayer.getStartTime();
 
+		long calc_match_time = endTime - startTime;
+		if (calc_match_time < (matchTime * 1000)) {
+			calc_match_time = matchTime * 1000;
+		}
+
 		MySQLDBManager sqlmanager = Main.getMySQLDBManager();
 		try {
 			Connection conn = sqlmanager.getConnection();
 
 			PreparedStatement statement = conn.prepareStatement(
-					"INSERT INTO periodmatch2 (player, uuid, success, failure, match_time, real_match_time, start_time, end_time) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+					"INSERT INTO periodmatch2 (player, uuid, success, failure, match_time, real_match_time, calc_match_time, start_time, end_time) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
 					Statement.RETURN_GENERATED_KEYS);
 			statement.setString(1, player.getName());
 			statement.setString(2, player.getUniqueId().toString());
@@ -54,8 +59,9 @@ public class Task_MatchEnd extends BukkitRunnable {
 			statement.setInt(4, failureCount);
 			statement.setInt(5, matchTime);
 			statement.setFloat(6, endTime - startTime);
-			statement.setTimestamp(7, new Timestamp(startTime));
-			statement.setTimestamp(8, new Timestamp(endTime));
+			statement.setFloat(7, calc_match_time);
+			statement.setTimestamp(8, new Timestamp(startTime));
+			statement.setTimestamp(9, new Timestamp(endTime));
 			int res = statement.executeUpdate();
 			if (res == 0) {
 				player.sendMessage("[PeriodMatch2] " + ChatColor.GREEN + "データの登録に失敗した恐れがあります。開発部にお問い合わせください。(1)");
@@ -79,7 +85,8 @@ public class Task_MatchEnd extends BukkitRunnable {
 					+ "秒部門)が終了しました。");
 
 			Bukkit.broadcastMessage(
-					"[PeriodMatch2] " + ChatColor.GREEN + "成功回数: " + successCount + " / 失敗回数: " + failureCount);
+					"[PeriodMatch2] " + ChatColor.GREEN + "成功回数: " + successCount + " / 失敗回数: " + failureCount
+							+ " / 純マッチタイム: " + (endTime - startTime));
 			Bukkit.broadcastMessage("[PeriodMatch2] " + ChatColor.GREEN + "順位: " + ranking + "位");
 			Bukkit.broadcastMessage("[PeriodMatch2] " + ChatColor.GREEN + "ランキングはこちらからご覧ください: https://jaoafa.com/p/");
 
@@ -107,7 +114,7 @@ public class Task_MatchEnd extends BukkitRunnable {
 		MySQLDBManager sqlmanager = Main.getMySQLDBManager();
 		Connection conn = sqlmanager.getConnection();
 		PreparedStatement statement = conn.prepareStatement(
-				"SELECT *, (success+(success/(success+failure))-failure)/real_match_time AS calc FROM periodmatch2 WHERE match_time = ? ORDER BY calc DESC;");
+				"SELECT *, (success+(success/(success+failure))-failure)/calc_match_time AS calc FROM periodmatch2 WHERE match_time = ? ORDER BY calc DESC;");
 		statement.setInt(1, matchTime);
 		ResultSet res = statement.executeQuery();
 		int rank = 1;
