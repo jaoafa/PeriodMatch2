@@ -51,7 +51,7 @@ public class Task_MatchEnd extends BukkitRunnable {
 			Connection conn = sqlmanager.getConnection();
 
 			PreparedStatement statement = conn.prepareStatement(
-					"INSERT INTO periodmatch2 (player, uuid, success, failure, match_time, real_match_time, calc_match_time, start_time, end_time) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+					"INSERT INTO periodmatch2 (player, uuid, success, failure, match_time, real_match_time, calc_match_time, start_time, end_time) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
 					Statement.RETURN_GENERATED_KEYS);
 			statement.setString(1, player.getName());
 			statement.setString(2, player.getUniqueId().toString());
