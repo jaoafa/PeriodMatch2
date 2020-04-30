@@ -12,3 +12,8 @@ commands:
     usage: /<command>
     permission: periodmatch.period
     permission-message: You do not have permission to perform this command.
+  periodmatch2:
+    description: PeriodMatch2のリリース情報を表示します。
+    usage: /<command>
+    permission: periodmatch.periodmatch2
+    permission-message: You do not have permission to perform this command.

@@ -3,6 +3,7 @@ package com.jaoafa.PeriodMatch2;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import com.jaoafa.PeriodMatch2.Command.Cmd_PeriodMatch2;
 import com.jaoafa.PeriodMatch2.Command.Period;
 import com.jaoafa.PeriodMatch2.Event.PeriodFailureCounter;
 import com.jaoafa.PeriodMatch2.Event.PeriodSuccessCounter;
@@ -75,6 +76,7 @@ public class Main extends JavaPlugin {
 		javaplugin = this;
 
 		getCommand(".").setExecutor(new Period(this));
+		getCommand("periodmatch2").setExecutor(new Cmd_PeriodMatch2());
 		getServer().getPluginManager().registerEvents(new PeriodSuccessCounter(this), this);
 		getServer().getPluginManager().registerEvents(new PeriodFailureCounter(this), this);
 	}
