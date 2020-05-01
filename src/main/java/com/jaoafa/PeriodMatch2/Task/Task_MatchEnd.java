@@ -80,6 +80,10 @@ public class Task_MatchEnd extends BukkitRunnable {
 			player.sendMessage("[PeriodMatch2] " + ChatColor.GREEN + "お疲れさまでした！");
 
 			int ranking = getRanking(matchTime, id);
+			long calc = (successCount + (successCount / (successCount + failureCount)) - failureCount)
+					/ calc_match_time;
+
+			int userranking = getUserRanking(matchTime, calc);
 
 			Bukkit.broadcastMessage("[PeriodMatch2] " + ChatColor.GREEN + player.getName() + "さんのピリオドマッチ(" + matchTime
 					+ "秒部門)が終了しました。");
@@ -87,7 +91,8 @@ public class Task_MatchEnd extends BukkitRunnable {
 			Bukkit.broadcastMessage(
 					"[PeriodMatch2] " + ChatColor.GREEN + "成功回数: " + successCount + " / 失敗回数: " + failureCount
 							+ " / 純マッチタイム: " + (endTime - startTime));
-			Bukkit.broadcastMessage("[PeriodMatch2] " + ChatColor.GREEN + "順位: " + ranking + "位");
+			Bukkit.broadcastMessage(
+					"[PeriodMatch2] " + ChatColor.GREEN + "順位: " + ranking + "位 (" + userranking + "位)");
 			Bukkit.broadcastMessage("[PeriodMatch2] " + ChatColor.GREEN + "ランキングはこちらからご覧ください: https://jaoafa.com/p/");
 
 			if (Main.getDiscord() != null) {
@@ -95,7 +100,8 @@ public class Task_MatchEnd extends BukkitRunnable {
 						"[PeriodMatch2] " + player.getName() + "さんのピリオドマッチ(" + matchTime + "秒部門)が終了しました。");
 				Main.getDiscord().sendMessage("597423199227084800",
 						"[PeriodMatch2] 成功回数: " + successCount + " / 失敗回数: " + failureCount);
-				Main.getDiscord().sendMessage("597423199227084800", "[PeriodMatch2] 順位: " + ranking + "位");
+				Main.getDiscord().sendMessage("597423199227084800",
+						"[PeriodMatch2] 順位: " + ranking + "位 (" + userranking + "位)");
 			}
 			return;
 		} catch (SQLException e) {
@@ -126,6 +132,28 @@ public class Task_MatchEnd extends BukkitRunnable {
 			int calc = res.getInt("calc");
 			rank++;
 			if (oldCalc != Integer.MIN_VALUE && oldCalc == calc)
+				rank--;
+			oldCalc = rank;
+		}
+		return rank;
+	}
+
+	int getUserRanking(int matchTime, long _calc) throws SQLException {
+		MySQLDBManager sqlmanager = Main.getMySQLDBManager();
+		Connection conn = sqlmanager.getConnection();
+		PreparedStatement statement = conn.prepareStatement(
+				"SELECT *, (success+(success/(success+failure))-failure)/calc_match_time AS calc FROM periodmatch2 WHERE match_time = ? ORDER BY calc DESC;");
+		statement.setInt(1, matchTime);
+		ResultSet res = statement.executeQuery();
+		int rank = 1;
+		long oldCalc = Long.MIN_VALUE;
+		while (res.next()) {
+			long calc = res.getLong("calc");
+			if (oldCalc < _calc && _calc <= calc) {
+				break;
+			}
+			rank++;
+			if (oldCalc != Long.MIN_VALUE && oldCalc == calc)
 				rank--;
 			oldCalc = rank;
 		}
