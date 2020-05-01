@@ -23,14 +23,14 @@ public class PeriodFailureCounter implements Listener {
 		PeriodMatchPlayer pmplayer = PeriodMatchPlayer.getPeriodMatchPlayer(player);
 		String message = event.getMessage();
 
-		if (!pmplayer.isPerioding()) {
-			return;
-		}
-
 		if (pmplayer.isWaiting() && !message.equals(".") && message.contains(".")) {
 			// Waitingで、「.」じゃなくて、「.」を含んでたら注意しておく
 			player.sendMessage("[PeriodMatch2] " + ChatColor.GREEN
 					+ "ヒント: 日本語変換がオンのままだと、ピリオドマッチを開始できません。/jp offを実行して日本語変換をオフにしてください。");
+			return;
+		}
+
+		if (!pmplayer.isPerioding()) {
 			return;
 		}
 
