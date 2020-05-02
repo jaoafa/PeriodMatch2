@@ -1,6 +1,6 @@
 name: ${project.artifactId}
 main: com.jaoafa.PeriodMatch2.Main
-version: 2020.05.02_19.06
+version: 2020.05.02_19.18
 description: jao Minecraft Serverでよく使用される「.」を使った対決がいまここに…！
 database: true
 author: mine_book000
