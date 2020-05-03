@@ -142,7 +142,7 @@ public class Task_MatchEnd extends BukkitRunnable {
 		MySQLDBManager sqlmanager = Main.getMySQLDBManager();
 		Connection conn = sqlmanager.getConnection();
 		PreparedStatement statement = conn.prepareStatement(
-				"SELECT *, (success (success/(success failure))-failure)/calc_match_time AS calc FROM periodmatch2 WHERE match_time = ? AND id NOT IN (SELECT id FROM periodmatch2 AS P1 WHERE P1.id < (SELECT MAX(P2.id) FROM (SELECT id, uuid FROM periodmatch2) AS P2 WHERE P1.uuid = P2.uuid)) ORDER BY calc DESC;");
+				"SELECT *, (success+(success/(success+failure))-failure)/calc_match_time AS calc FROM periodmatch2 WHERE match_time = ? AND id NOT IN (SELECT id FROM periodmatch2 AS P1 WHERE P1.id < (SELECT MAX(P2.id) FROM (SELECT id, uuid FROM periodmatch2) AS P2 WHERE P1.uuid = P2.uuid)) ORDER BY calc DESC;");
 		statement.setInt(1, matchTime);
 		ResultSet res = statement.executeQuery();
 		int rank = 1;
