@@ -80,8 +80,6 @@ public class Task_MatchEnd extends BukkitRunnable {
 			player.sendMessage("[PeriodMatch2] " + ChatColor.GREEN + "お疲れさまでした！");
 
 			int ranking = getRanking(matchTime, id);
-			long calc = (successCount + (successCount / (successCount + failureCount)) - failureCount)
-					/ calc_match_time;
 
 			Bukkit.broadcastMessage("[PeriodMatch2] " + ChatColor.GREEN + player.getName() + "さんのピリオドマッチ(" + matchTime
 					+ "秒部門)が終了しました。");
@@ -131,7 +129,7 @@ public class Task_MatchEnd extends BukkitRunnable {
 			rank++;
 			if (oldCalc != Integer.MIN_VALUE && oldCalc == calc)
 				rank--;
-			oldCalc = rank;
+			oldCalc = calc;
 		}
 		return rank;
 	}
