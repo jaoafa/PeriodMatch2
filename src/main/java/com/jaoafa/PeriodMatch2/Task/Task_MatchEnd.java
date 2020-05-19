@@ -6,6 +6,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -19,6 +21,19 @@ import com.jaoafa.PeriodMatch2.Lib.MySQLDBManager;
 public class Task_MatchEnd extends BukkitRunnable {
 	Player player;
 	PeriodMatchPlayer pmplayer;
+	List<Integer> rankingSecs = new ArrayList<Integer>() {
+		{
+			add(-1);
+			add(0);
+			add(1);
+			add(10);
+			add(20);
+			add(30);
+			add(60);
+			add(100);
+			add(300);
+		}
+	};
 
 	public Task_MatchEnd(Player player, PeriodMatchPlayer pmplayer) {
 		this.player = player;
@@ -87,9 +102,12 @@ public class Task_MatchEnd extends BukkitRunnable {
 			Bukkit.broadcastMessage(
 					"[PeriodMatch2] " + ChatColor.GREEN + "成功回数: " + successCount + " / 失敗回数: " + failureCount
 							+ " / 純マッチタイム: " + (endTime - startTime));
-			Bukkit.broadcastMessage(
-					"[PeriodMatch2] " + ChatColor.GREEN + "順位: " + ranking + "位");
-			Bukkit.broadcastMessage("[PeriodMatch2] " + ChatColor.GREEN + "ランキングはこちらからご覧ください: https://jaoafa.com/p/");
+			if (rankingSecs.contains(ranking)) {
+				Bukkit.broadcastMessage(
+						"[PeriodMatch2] " + ChatColor.GREEN + "順位: " + ranking + "位");
+				Bukkit.broadcastMessage(
+						"[PeriodMatch2] " + ChatColor.GREEN + "ランキングはこちらからご覧ください: https://jaoafa.com/p/");
+			}
 
 			if (Main.getDiscord() != null) {
 				Main.getDiscord().sendMessage("597423199227084800",
