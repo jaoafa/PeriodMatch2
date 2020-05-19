@@ -120,14 +120,14 @@ public class Task_MatchEnd extends BukkitRunnable {
 		statement.setInt(1, matchTime);
 		ResultSet res = statement.executeQuery();
 		int rank = 1;
-		int oldCalc = Integer.MIN_VALUE;
+		double oldCalc = Double.MIN_VALUE;
 		while (res.next()) {
 			if (res.getInt("id") == id) {
 				break;
 			}
-			int calc = res.getInt("calc");
+			double calc = res.getDouble("calc");
 			rank++;
-			if (oldCalc != Integer.MIN_VALUE && oldCalc == calc)
+			if (oldCalc != Double.MIN_VALUE && oldCalc == calc)
 				rank--;
 			oldCalc = calc;
 		}
