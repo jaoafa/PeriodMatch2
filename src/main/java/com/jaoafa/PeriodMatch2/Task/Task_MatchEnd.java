@@ -102,7 +102,7 @@ public class Task_MatchEnd extends BukkitRunnable {
 			Bukkit.broadcastMessage(
 					"[PeriodMatch2] " + ChatColor.GREEN + "成功回数: " + successCount + " / 失敗回数: " + failureCount
 							+ " / 純マッチタイム: " + (endTime - startTime));
-			if (rankingSecs.contains(ranking)) {
+			if (rankingSecs.contains(matchTime)) {
 				Bukkit.broadcastMessage(
 						"[PeriodMatch2] " + ChatColor.GREEN + "順位: " + ranking + "位");
 				Bukkit.broadcastMessage(
