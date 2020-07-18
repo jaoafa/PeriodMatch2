@@ -31,7 +31,7 @@ public class Discord {
 			JSONObject paramobj = new JSONObject();
 			paramobj.put("content", content);
 
-			String url = "https://discordapp.com/api/channels/" + channelId + "/messages";
+			String url = "https://discord.com/api/channels/" + channelId + "/messages";
 			RequestBody body = RequestBody.create(paramobj.toJSONString(), JSON);
 			OkHttpClient client = new OkHttpClient();
 			Request request = new Request.Builder()
