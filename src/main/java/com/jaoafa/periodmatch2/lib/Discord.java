@@ -3,7 +3,7 @@ package com.jaoafa.periodmatch2.lib;
 import java.io.IOException;
 
 import okhttp3.*;
-import org.json.simple.JSONObject;
+import org.json.JSONObject;
 
 public class Discord {
 	private static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
@@ -18,20 +18,13 @@ public class Discord {
 	 * @param channelId チャンネルID
 	 * @param content メッセージテキスト
 	 */
-	@SuppressWarnings("unchecked")
 	public void sendMessage(String channelId, String content) {
 		try {
 			JSONObject param = new JSONObject();
 			param.put("content", content);
 
 			String url = "https://discord.com/api/channels/" + channelId + "/messages";
-			RequestBody body;
-			try{
-			    body = RequestBody.create(param.toJSONString(), JSON);
-            }catch (NoSuchMethodError e){
-                //noinspection deprecation
-                body = RequestBody.create(JSON, param.toJSONString());
-            }
+			RequestBody body = RequestBody.create(JSON, param.toString());
 			OkHttpClient client = new OkHttpClient();
 			Request request = new Request.Builder()
 					.url(url)
