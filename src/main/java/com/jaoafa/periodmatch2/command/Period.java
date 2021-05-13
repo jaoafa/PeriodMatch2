@@ -58,7 +58,7 @@ public class Period implements CommandExecutor {
                 Component.text("ピリオドマッチを開始します。次に「.」を打った瞬間から60秒間計測します。", NamedTextColor.GREEN)
             );
             Main.sendMessage(sender,
-                Component.text("ピリオドマッチを開始します。次に「.」を打った瞬間から60秒間計測します。", NamedTextColor.GREEN)
+                Component.text("正確にピリオド判定を行うため、かなローマ字変換をオフにして(/jp off)ご利用ください。", NamedTextColor.GREEN)
             );
             Main.sendMessage(sender,
                 Component.text("キー設定はデフォルトで実施してください。また外部ツールなどの利用を厳しく禁止します。", NamedTextColor.GREEN)
