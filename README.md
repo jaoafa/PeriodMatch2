@@ -1,10 +1,5 @@
 # PeriodMatch2
 
-![CI](https://github.com/jaoafa/PeriodMatch2/workflows/CI/badge.svg)
-[![Support jdk](https://img.shields.io/badge/Support%20jdk-oraclejdk8-red.svg)](https://img.shields.io)
-[![Author](https://img.shields.io/badge/Author%20MinecraftID-mine__book000-orange.svg)](https://img.shields.io)
-[![License](https://img.shields.io/badge/license-jaoLicense-yellow.svg)](https://github.com/jaoafa/jao-Minecraft-Server/blob/master/jaoLICENSE.md)
-
 [jaoafa/PeriodMatch](https://github.com/jaoafa/PeriodMatch)の後継バージョンです。
 
 ## ピリオドマッチとはなんですか？
