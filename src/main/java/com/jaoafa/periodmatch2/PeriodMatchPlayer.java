@@ -1,18 +1,24 @@
 package com.jaoafa.periodmatch2;
 
 import com.jaoafa.periodmatch2.task.Task_MatchEnd;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.JoinConfiguration;
+import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.title.Title;
+import net.kyori.adventure.title.TitlePart;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitTask;
 
+import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
 public class PeriodMatchPlayer {
-	public static Map<UUID, PeriodMatchPlayer> players = new HashMap<>();
+	public static final Map<UUID, PeriodMatchPlayer> players = new HashMap<>();
 
-	Player player; // プレイヤー
+	final Player player; // プレイヤー
 	boolean perioding = false; // マッチ中か
 	boolean waiting = false;
 	int success = 0; // 成功回数
@@ -94,14 +100,12 @@ public class PeriodMatchPlayer {
 	}
 
 	public void setTitle() {
-	    player.sendTitle(
-            ChatColor.GOLD + "PeriodMatch2",
-            ChatColor.GREEN + "成功: " + getSuccessCount() + ChatColor.RESET + " | " + ChatColor.RED
-                + getFailureCount() + " :失敗",
-            0,
-            Integer.MAX_VALUE,
-            0
-        );
+        player.sendTitlePart(TitlePart.TITLE, Component.text("PeriodMatch2", NamedTextColor.GOLD));
+        player.sendTitlePart(TitlePart.SUBTITLE, Component.join(JoinConfiguration.noSeparators(),
+            Component.text("成功: " + getSuccessCount(), NamedTextColor.GREEN),
+            Component.text(" | "),
+            Component.text(getFailureCount() + " :失敗", NamedTextColor.RED)));
+        player.sendTitlePart(TitlePart.TIMES, Title.Times.of(Duration.ZERO, Duration.ofSeconds(Long.MAX_VALUE), Duration.ZERO));
 	}
 
 	public void clearTitle() {
