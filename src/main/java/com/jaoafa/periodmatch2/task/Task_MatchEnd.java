@@ -15,9 +15,9 @@ import java.util.Arrays;
 import java.util.List;
 
 public class Task_MatchEnd extends BukkitRunnable {
-    Player player;
-    PeriodMatchPlayer pmplayer;
-    List<Integer> rankingSecs = Arrays.asList(
+    final Player player;
+    final PeriodMatchPlayer pmplayer;
+    final List<Integer> rankingSecs = Arrays.asList(
         -1,
         0,
         1,

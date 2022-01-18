@@ -6,8 +6,8 @@
     <artifactId>periodmatch2</artifactId>
     <version>0.0.1</version>
     <properties>
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
     <build>
@@ -17,8 +17,8 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.6.1</version>
                 <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
+                    <source>17</source>
+                    <target>17</target>
                 </configuration>
             </plugin>
             <plugin>
@@ -46,26 +46,6 @@
                     </execution>
                 </executions>
             </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-antrun-plugin</artifactId>
-                <version>1.8</version>
-                <executions>
-                    <execution>
-                        <phase>validate</phase>
-                        <configuration>
-                            <target>
-                                <exec executable="php">
-                                    <arg value="InsertVersion.php"/>
-                                </exec>
-                            </target>
-                        </configuration>
-                        <goals>
-                            <goal>run</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
         </plugins>
         <resources>
             <resource>
@@ -84,23 +64,19 @@
             <id>sonatype</id>
             <url>https://oss.sonatype.org/content/groups/public/</url>
         </repository>
-        <repository>
-            <id>jitpack.io</id>
-            <url>https://jitpack.io</url>
-        </repository>
     </repositories>
 
     <dependencies>
         <dependency>
-            <groupId>com.destroystokyo.paper</groupId>
+            <groupId>io.papermc.paper</groupId>
             <artifactId>paper-api</artifactId>
-            <version>1.16.5-R0.1-SNAPSHOT</version>
+            <version>1.18.1-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.squareup.okhttp3</groupId>
             <artifactId>okhttp</artifactId>
-            <version>3.13.0</version>
+            <version>4.9.3</version>
         </dependency>
         <dependency>
             <groupId>org.json</groupId>
@@ -110,7 +86,7 @@
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
-            <version>3.11</version>
+            <version>3.12.0</version>
         </dependency>
     </dependencies>
 </project>

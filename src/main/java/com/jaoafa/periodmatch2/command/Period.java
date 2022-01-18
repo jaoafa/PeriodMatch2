@@ -12,33 +12,26 @@ import org.bukkit.plugin.java.JavaPlugin;
 import com.jaoafa.periodmatch2.PeriodMatchPlayer;
 import org.jetbrains.annotations.NotNull;
 
-public class Period implements CommandExecutor {
-	JavaPlugin plugin;
-
-	public Period(JavaPlugin plugin) {
-		this.plugin = plugin;
-	}
-
-	public boolean onCommand(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String commandLabel, String[] args) {
-		if (!(sender instanceof Player)) {
-			// プレイヤー以外からのコマンド実行
+public record Period(JavaPlugin plugin) implements CommandExecutor {
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String commandLabel, String[] args) {
+        if (!(sender instanceof Player player)) {
+            // プレイヤー以外からのコマンド実行
             Main.sendMessage(sender,
                 Component.text("このコマンドはゲーム内でのみ使用できます。", NamedTextColor.GREEN)
             );
-			return true;
-		}
-		Player player = (Player) sender;
-		PeriodMatchPlayer pmplayer = PeriodMatchPlayer.getPeriodMatchPlayer(player);
-		if (args.length == 0) {
-			if (pmplayer.isPerioding()) {
+            return true;
+        }
+        PeriodMatchPlayer pmplayer = PeriodMatchPlayer.getPeriodMatchPlayer(player);
+        if (args.length == 0) {
+            if (pmplayer.isPerioding()) {
                 Main.sendMessage(sender,
                     Component.text(String.format("現在あなたはピリオドマッチを%d秒で行っています。", pmplayer.getMatchTime()), NamedTextColor.GREEN)
                 );
                 Main.sendMessage(sender,
                     Component.text("「/. stop」で行っているピリオドマッチを強制終了できます。", NamedTextColor.GREEN)
                 );
-				return true;
-			} else if (pmplayer.isWaiting()) {
+                return true;
+            } else if (pmplayer.isWaiting()) {
                 Main.sendMessage(sender,
                     Component.text(String.format("現在あなたはピリオドマッチを%d秒で待機しています。", pmplayer.getMatchTime()), NamedTextColor.GREEN)
                 );
@@ -48,12 +41,12 @@ public class Period implements CommandExecutor {
                 Main.sendMessage(sender,
                     Component.text("「/. stop」で行っているピリオドマッチを強制終了できます。", NamedTextColor.GREEN)
                 );
-				return true;
-			}
+                return true;
+            }
 
-			// デフォルト値(30秒)で開始
-			pmplayer.setMatchTime(60);
-			pmplayer.setWaiting(true);
+            // デフォルト値(30秒)で開始
+            pmplayer.setMatchTime(60);
+            pmplayer.setWaiting(true);
             Main.sendMessage(sender,
                 Component.text("ピリオドマッチを開始します。次に「.」を打った瞬間から60秒間計測します。", NamedTextColor.GREEN)
             );
@@ -63,27 +56,27 @@ public class Period implements CommandExecutor {
             Main.sendMessage(sender,
                 Component.text("キー設定はデフォルトで実施してください。また外部ツールなどの利用を厳しく禁止します。", NamedTextColor.GREEN)
             );
-			return true;
-		} else if (args.length == 1) {
-			if (args[0].equalsIgnoreCase("stop")) {
-				pmplayer.forceEnd();
-				return true;
-			} else if (isNumber(args[0])) {
-				if (pmplayer.isPerioding()) {
+            return true;
+        } else if (args.length == 1) {
+            if (args[0].equalsIgnoreCase("stop")) {
+                pmplayer.forceEnd();
+                return true;
+            } else if (isNumber(args[0])) {
+                if (pmplayer.isPerioding()) {
                     Main.sendMessage(sender,
                         Component.text("現在あなたはピリオドマッチを実施中です。強制終了するには「/. stop」を実行してください。", NamedTextColor.GREEN)
                     );
-					return true;
-				}
-				if (pmplayer.isWaiting()) {
+                    return true;
+                }
+                if (pmplayer.isWaiting()) {
                     Main.sendMessage(sender,
                         Component.text("現在あなたはピリオドマッチを待機中です。強制終了するには「/. stop」を実行してください。", NamedTextColor.GREEN)
                     );
-					return true;
-				}
-				int sec = Integer.parseInt(args[0]);
-				pmplayer.setMatchTime(sec);
-				pmplayer.setWaiting(true);
+                    return true;
+                }
+                int sec = Integer.parseInt(args[0]);
+                pmplayer.setMatchTime(sec);
+                pmplayer.setWaiting(true);
                 Main.sendMessage(sender,
                     Component.text(String.format("ピリオドマッチを開始します。次に「.」を打った瞬間から%d秒間計測します。", sec), NamedTextColor.GREEN)
                 );
@@ -93,9 +86,9 @@ public class Period implements CommandExecutor {
                 Main.sendMessage(sender,
                     Component.text("キー設定はデフォルトで実施してください。また外部ツールなどの利用を厳しく禁止します。", NamedTextColor.GREEN)
                 );
-				return true;
-			}
-		}
+                return true;
+            }
+        }
         Main.sendMessage(sender,
             Component.text("----- Period -----", NamedTextColor.GREEN)
         );
@@ -111,15 +104,15 @@ public class Period implements CommandExecutor {
         Main.sendMessage(sender,
             Component.text("/. stop: 既に開始しているピリオドマッチを強制終了します。", NamedTextColor.GREEN)
         );
-		return true;
-	}
+        return true;
+    }
 
-	private boolean isNumber(String num) {
-		try {
-			Integer.parseInt(num);
-			return true;
-		} catch (NumberFormatException e) {
-			return false;
-		}
-	}
+    private boolean isNumber(String num) {
+        try {
+            Integer.parseInt(num);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }
 }
