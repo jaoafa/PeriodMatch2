@@ -5,7 +5,7 @@ description: jao Minecraft Serverでよく使用される「.」を使った対�
 database: true
 author: mine_book000
 website: https://jaoafa.com/
-api-version: 1.18.1
+api-version: 1.18
 commands:
   .:
     description: ピリオド対決を行います
