@@ -106,7 +106,7 @@ public class PeriodMatchPlayer {
             Component.text("成功: " + getSuccessCount(), NamedTextColor.GREEN),
             Component.text(" | "),
             Component.text(getFailureCount() + " :失敗", NamedTextColor.RED)));
-        player.sendTitlePart(TitlePart.TIMES, Title.Times.of(Duration.ZERO, ChronoUnit.FOREVER.getDuration(), Duration.ZERO));
+        player.sendTitlePart(TitlePart.TIMES, Title.Times.of(Duration.ZERO, Duration.ofSeconds(Integer.MAX_VALUE), Duration.ZERO));
 	}
 
 	public void clearTitle() {
