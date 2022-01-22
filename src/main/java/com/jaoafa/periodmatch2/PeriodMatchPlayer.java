@@ -11,6 +11,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitTask;
 
 import java.time.Duration;
+import java.time.temporal.ChronoUnit;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -105,7 +106,7 @@ public class PeriodMatchPlayer {
             Component.text("成功: " + getSuccessCount(), NamedTextColor.GREEN),
             Component.text(" | "),
             Component.text(getFailureCount() + " :失敗", NamedTextColor.RED)));
-        player.sendTitlePart(TitlePart.TIMES, Title.Times.of(Duration.ZERO, Duration.ofSeconds(Long.MAX_VALUE), Duration.ZERO));
+        player.sendTitlePart(TitlePart.TIMES, Title.Times.of(Duration.ZERO, ChronoUnit.FOREVER.getDuration(), Duration.ZERO));
 	}
 
 	public void clearTitle() {
