@@ -4,6 +4,7 @@ import com.jaoafa.periodmatch2.Main;
 import com.jaoafa.periodmatch2.PeriodMatchPlayer;
 import com.jaoafa.periodmatch2.lib.MySQLDBManager;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.JoinConfiguration;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -133,12 +134,12 @@ public class Task_MatchEnd extends BukkitRunnable {
             if (rankingSecs.contains(matchTime)) {
                 Main.broadcast(Component.text(
                     String.format("順位: %d位", ranking), NamedTextColor.GREEN));
-                Main.broadcast(Component.text().append(
+                Main.broadcast(Component.join(JoinConfiguration.noSeparators(),
                     Component.text("ランキングはこちらからご覧ください: ", NamedTextColor.GREEN),
                     Component.text("https://jaoafa.com/data/ranking/periodmatch/" + matchTime)
                         .hoverEvent(HoverEvent.showText(Component.text("クリックすると「https://jaoafa.com/data/ranking/periodmatch/%d」をブラウザで開きます。".formatted(matchTime))))
                         .clickEvent(ClickEvent.openUrl("https://jaoafa.com/data/ranking/periodmatch/" + matchTime))
-                ).build());
+                ));
             }
 
             if (Main.getDiscord() != null) {
