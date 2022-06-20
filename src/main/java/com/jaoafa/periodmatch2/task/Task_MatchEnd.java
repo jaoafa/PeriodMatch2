@@ -35,27 +35,6 @@ public class Task_MatchEnd extends BukkitRunnable {
         this.pmplayer = pmplayer;
     }
 
-    private static int getRanking(int matchTime, int id) throws SQLException {
-        MySQLDBManager sqlmanager = Main.getMySQLDBManager();
-        Connection conn = sqlmanager.getConnection();
-        try (PreparedStatement statement = conn.prepareStatement(
-            "SELECT *, (success*(success/(success+failure))-failure)/calc_match_time AS calc FROM periodmatch2 WHERE match_time = ? ORDER BY calc DESC;")) {
-            statement.setInt(1, matchTime);
-            try (ResultSet res = statement.executeQuery()) {
-                int rank = 1;
-                double oldCalc = Double.MIN_VALUE;
-                while (res.next()) {
-                    if (res.getInt("id") == id) break;
-                    double calc = res.getDouble("calc");
-                    rank++;
-                    if (oldCalc != Double.MIN_VALUE && oldCalc == calc) rank--;
-                    oldCalc = calc;
-                }
-                return rank;
-            }
-        }
-    }
-
     @Override
     public void run() {
         pmplayer.end();
@@ -164,6 +143,27 @@ public class Task_MatchEnd extends BukkitRunnable {
                 String.format("startTime: %d / endTime: %d", startTime, endTime), NamedTextColor.GREEN
             ));
             e.printStackTrace();
+        }
+    }
+
+    private static int getRanking(int matchTime, int id) throws SQLException {
+        MySQLDBManager sqlmanager = Main.getMySQLDBManager();
+        Connection conn = sqlmanager.getConnection();
+        try (PreparedStatement statement = conn.prepareStatement(
+            "SELECT *, (success*(success/(success+failure))-failure)/calc_match_time AS calc FROM periodmatch2 WHERE match_time = ? ORDER BY calc DESC;")) {
+            statement.setInt(1, matchTime);
+            try (ResultSet res = statement.executeQuery()) {
+                int rank = 1;
+                double oldCalc = Double.MIN_VALUE;
+                while (res.next()) {
+                    if (res.getInt("id") == id) break;
+                    double calc = res.getDouble("calc");
+                    rank++;
+                    if (oldCalc != Double.MIN_VALUE && oldCalc == calc) rank--;
+                    oldCalc = calc;
+                }
+                return rank;
+            }
         }
     }
 }
