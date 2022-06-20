@@ -1,8 +1,8 @@
 package com.jaoafa.periodmatch2.task;
 
-import com.jaoafa.periodmatch2.lib.MySQLDBManager;
 import com.jaoafa.periodmatch2.Main;
 import com.jaoafa.periodmatch2.PeriodMatchPlayer;
+import com.jaoafa.periodmatch2.lib.MySQLDBManager;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.event.HoverEvent;
@@ -15,9 +15,9 @@ import java.util.Arrays;
 import java.util.List;
 
 public class Task_MatchEnd extends BukkitRunnable {
-    final Player player;
-    final PeriodMatchPlayer pmplayer;
-    final List<Integer> rankingSecs = Arrays.asList(
+    private final Player player;
+    private final PeriodMatchPlayer pmplayer;
+    private final List<Integer> rankingSecs = Arrays.asList(
         -1,
         0,
         1,
@@ -34,6 +34,27 @@ public class Task_MatchEnd extends BukkitRunnable {
         this.pmplayer = pmplayer;
     }
 
+    private static int getRanking(int matchTime, int id) throws SQLException {
+        MySQLDBManager sqlmanager = Main.getMySQLDBManager();
+        Connection conn = sqlmanager.getConnection();
+        try (PreparedStatement statement = conn.prepareStatement(
+            "SELECT *, (success*(success/(success+failure))-failure)/calc_match_time AS calc FROM periodmatch2 WHERE match_time = ? ORDER BY calc DESC;")) {
+            statement.setInt(1, matchTime);
+            try (ResultSet res = statement.executeQuery()) {
+                int rank = 1;
+                double oldCalc = Double.MIN_VALUE;
+                while (res.next()) {
+                    if (res.getInt("id") == id) break;
+                    double calc = res.getDouble("calc");
+                    rank++;
+                    if (oldCalc != Double.MIN_VALUE && oldCalc == calc) rank--;
+                    oldCalc = calc;
+                }
+                return rank;
+            }
+        }
+    }
+
     @Override
     public void run() {
         pmplayer.end();
@@ -45,9 +66,7 @@ public class Task_MatchEnd extends BukkitRunnable {
         long startTime = pmplayer.getStartTime();
 
         long calc_match_time = endTime - startTime;
-        if (calc_match_time < (matchTime * 1000L)) {
-            calc_match_time = matchTime * 1000L;
-        }
+        if (calc_match_time < (matchTime * 1000L)) calc_match_time = matchTime * 1000L;
 
         MySQLDBManager sqlmanager = Main.getMySQLDBManager();
         try {
@@ -80,9 +99,8 @@ public class Task_MatchEnd extends BukkitRunnable {
             }
             ResultSet res_genkey = statement.getGeneratedKeys();
             int id = -1;
-            if (res_genkey != null && res_genkey.next()) {
-                id = res_genkey.getInt(1);
-            } else {
+            if (res_genkey != null && res_genkey.next()) id = res_genkey.getInt(1);
+            else {
                 Main.sendMessage(player,
                     Component.text("データの登録に失敗した恐れがあります。開発部にお問い合わせください。(2)", NamedTextColor.GREEN)
                 );
@@ -98,7 +116,7 @@ public class Task_MatchEnd extends BukkitRunnable {
                 Component.text("お疲れさまでした！", NamedTextColor.GREEN)
             );
 
-            int ranking = getRanking(matchTime, id);
+            int ranking = Task_MatchEnd.getRanking(matchTime, id);
 
             Main.broadcast(Component.text(
                 String.format("%sさんのピリオドマッチ(%d秒部門)が終了しました。",
@@ -117,9 +135,9 @@ public class Task_MatchEnd extends BukkitRunnable {
                     String.format("順位: %d位", ranking), NamedTextColor.GREEN));
                 Main.broadcast(Component.text().append(
                     Component.text("ランキングはこちらからご覧ください: ", NamedTextColor.GREEN),
-                    Component.text("https://jaoafa.com/p/")
-                        .hoverEvent(HoverEvent.showText(Component.text("クリックすると「https://jaoafa.com/p/」をブラウザで開きます。")))
-                        .clickEvent(ClickEvent.openUrl("https://jaoafa.com/p/"))
+                    Component.text("https://jaoafa.com/data/ranking/periodmatch/" + matchTime)
+                        .hoverEvent(HoverEvent.showText(Component.text("クリックすると「https://jaoafa.com/data/ranking/periodmatch/%d」をブラウザで開きます。".formatted(matchTime))))
+                        .clickEvent(ClickEvent.openUrl("https://jaoafa.com/data/ranking/periodmatch/" + matchTime))
                 ).build());
             }
 
@@ -147,28 +165,4 @@ public class Task_MatchEnd extends BukkitRunnable {
             e.printStackTrace();
         }
     }
-
-	int getRanking(int matchTime, int id) throws SQLException {
-		MySQLDBManager sqlmanager = Main.getMySQLDBManager();
-		Connection conn = sqlmanager.getConnection();
-        try (PreparedStatement statement = conn.prepareStatement(
-            "SELECT *, (success*(success/(success+failure))-failure)/calc_match_time AS calc FROM periodmatch2 WHERE match_time = ? ORDER BY calc DESC;")) {
-            statement.setInt(1, matchTime);
-            try (ResultSet res = statement.executeQuery()) {
-                int rank = 1;
-                double oldCalc = Double.MIN_VALUE;
-                while (res.next()) {
-                    if (res.getInt("id") == id) {
-                        break;
-                    }
-                    double calc = res.getDouble("calc");
-                    rank++;
-                    if (oldCalc != Double.MIN_VALUE && oldCalc == calc)
-                        rank--;
-                    oldCalc = calc;
-                }
-                return rank;
-            }
-        }
-	}
 }
