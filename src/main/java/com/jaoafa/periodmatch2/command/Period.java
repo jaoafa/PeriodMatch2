@@ -1,6 +1,7 @@
 package com.jaoafa.periodmatch2.command;
 
 import com.jaoafa.periodmatch2.Main;
+import com.jaoafa.periodmatch2.PeriodMatchPlayer;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.command.Command;
@@ -8,8 +9,6 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
-
-import com.jaoafa.periodmatch2.PeriodMatchPlayer;
 import org.jetbrains.annotations.NotNull;
 
 public record Period(JavaPlugin plugin) implements CommandExecutor {

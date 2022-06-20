@@ -1,9 +1,9 @@
 package com.jaoafa.periodmatch2.lib;
 
-import java.io.IOException;
-
 import okhttp3.*;
 import org.json.JSONObject;
+
+import java.io.IOException;
 
 public record Discord(String token) {
     private static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
