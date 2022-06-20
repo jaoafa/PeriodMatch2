@@ -1,6 +1,7 @@
 package com.jaoafa.periodmatch2.command;
 
 import com.jaoafa.periodmatch2.Main;
+import com.jaoafa.periodmatch2.PeriodMatchPlayer;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.command.Command;
@@ -8,8 +9,6 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
-
-import com.jaoafa.periodmatch2.PeriodMatchPlayer;
 import org.jetbrains.annotations.NotNull;
 
 public record Period(JavaPlugin plugin) implements CommandExecutor {
@@ -25,7 +24,7 @@ public record Period(JavaPlugin plugin) implements CommandExecutor {
         if (args.length == 0) {
             if (pmplayer.isPerioding()) {
                 Main.sendMessage(sender,
-                    Component.text(String.format("現在あなたはピリオドマッチを%d秒で行っています。", pmplayer.getMatchTime()), NamedTextColor.GREEN)
+                    Component.text("現在あなたはピリオドマッチを%d秒で行っています。".formatted(pmplayer.getMatchTime()), NamedTextColor.GREEN)
                 );
                 Main.sendMessage(sender,
                     Component.text("「/. stop」で行っているピリオドマッチを強制終了できます。", NamedTextColor.GREEN)
@@ -33,7 +32,7 @@ public record Period(JavaPlugin plugin) implements CommandExecutor {
                 return true;
             } else if (pmplayer.isWaiting()) {
                 Main.sendMessage(sender,
-                    Component.text(String.format("現在あなたはピリオドマッチを%d秒で待機しています。", pmplayer.getMatchTime()), NamedTextColor.GREEN)
+                    Component.text("現在あなたはピリオドマッチを%d秒で待機しています。".formatted(pmplayer.getMatchTime()), NamedTextColor.GREEN)
                 );
                 Main.sendMessage(sender,
                     Component.text("次に「.」と打った瞬間から開始します。", NamedTextColor.GREEN)
@@ -78,7 +77,7 @@ public record Period(JavaPlugin plugin) implements CommandExecutor {
                 pmplayer.setMatchTime(sec);
                 pmplayer.setWaiting(true);
                 Main.sendMessage(sender,
-                    Component.text(String.format("ピリオドマッチを開始します。次に「.」を打った瞬間から%d秒間計測します。", sec), NamedTextColor.GREEN)
+                    Component.text("ピリオドマッチを開始します。次に「.」を打った瞬間から%d秒間計測します。".formatted(sec), NamedTextColor.GREEN)
                 );
                 Main.sendMessage(sender,
                     Component.text("正確にピリオド判定を行うため、かなローマ字変換をオフにして(/jp off)ご利用ください。", NamedTextColor.GREEN)
