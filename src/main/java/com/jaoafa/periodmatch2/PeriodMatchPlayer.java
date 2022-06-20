@@ -105,7 +105,8 @@ public class PeriodMatchPlayer {
 
     private void setTitle() {
         player.sendTitlePart(TitlePart.TITLE, Component.text("PeriodMatch2", NamedTextColor.GOLD));
-        player.sendTitlePart(TitlePart.SUBTITLE, Component.join(JoinConfiguration.noSeparators(),
+        player.sendTitlePart(TitlePart.SUBTITLE, Component.join(
+            JoinConfiguration.noSeparators(),
             Component.text("成功: " + getSuccessCount(), NamedTextColor.GREEN),
             Component.text(" | "),
             Component.text(getFailureCount() + " :失敗", NamedTextColor.RED)));

@@ -14,25 +14,19 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public record PeriodSuccessCounter(JavaPlugin plugin) implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-    public void onAsyncPlayerChatEvent(AsyncChatEvent event) {
+    public static void onAsyncPlayerChatEvent(AsyncChatEvent event) {
         Player player = event.getPlayer();
         PeriodMatchPlayer pmplayer = PeriodMatchPlayer.getPeriodMatchPlayer(player);
         String message = PlainTextComponentSerializer.plainText().serialize(event.message());
 
-        if (!message.equals(".")) {
-            // 「.」以外ならダメ
-            return;
-        }
+        // 「.」以外ならダメ
+        if (!message.equals(".")) return;
 
         if (pmplayer.isWaiting()) {
             // 待機中だったら開始する。寝てたらキャンセル
             if (player.isSleeping()) {
-                Main.sendMessage(player,
-                    Component.text("ピリオドマッチを開始できませんでした。", NamedTextColor.GREEN)
-                );
-                Main.sendMessage(player,
-                    Component.text("ルールを確認し、最初からやり直してください。", NamedTextColor.GREEN)
-                );
+                Main.sendMessage(player, Component.text("ピリオドマッチを開始できませんでした。", NamedTextColor.GREEN));
+                Main.sendMessage(player, Component.text("ルールを確認し、最初からやり直してください。", NamedTextColor.GREEN));
                 pmplayer.setWaiting(false);
                 pmplayer.Save();
                 return;
@@ -41,14 +35,10 @@ public record PeriodSuccessCounter(JavaPlugin plugin) implements Listener {
             pmplayer.Save();
         }
 
-        if (player.isSleeping()) {
-            // 寝てたらダメ
-            return;
-        }
+        // 寝てたらダメ
+        if (player.isSleeping()) return;
 
-        if (!pmplayer.isPerioding()) {
-            return;
-        }
+        if (!pmplayer.isPerioding()) return;
 
         pmplayer.Success();
         pmplayer.Save();
