@@ -47,7 +47,7 @@ public class Cmd_PeriodMatch2 implements CommandExecutor {
         String latestVerSha = getLastCommitSha(desc.getName());
 
         Main.sendMessage(sender,
-            Component.text(String.format("----- %s information -----", desc.getName()), NamedTextColor.GREEN)
+            Component.text("----- %s information -----".formatted(desc.getName()), NamedTextColor.GREEN)
         );
 
         if (nowVer.equals(latestVer)) {
@@ -55,7 +55,7 @@ public class Cmd_PeriodMatch2 implements CommandExecutor {
                 Component.text("現在導入されているバージョンは最新です。", NamedTextColor.AQUA)
             );
             Main.sendMessage(sender,
-                Component.text(String.format("導入バージョン: %s", nowVer), NamedTextColor.AQUA)
+                Component.text("導入バージョン: %s".formatted(nowVer), NamedTextColor.AQUA)
             );
         } else if (nowVerSha.equals(latestVerSha)) {
             // shaがおなじ
@@ -63,10 +63,10 @@ public class Cmd_PeriodMatch2 implements CommandExecutor {
                 Component.text("現在導入されているバージョンは最新です。", NamedTextColor.AQUA)
             );
             Main.sendMessage(sender,
-                Component.text(String.format("導入バージョン: %s", nowVer), NamedTextColor.AQUA)
+                Component.text("導入バージョン: %s".formatted(nowVer), NamedTextColor.AQUA)
             );
             Main.sendMessage(sender,
-                Component.text(String.format("最新バージョン: %s (%s)", latestVer, latestVerSha), NamedTextColor.AQUA)
+                Component.text("最新バージョン: %s (%s)".formatted(latestVer, latestVerSha), NamedTextColor.AQUA)
             );
         } else if (nowVerDate.before(latestVerDate)) {
             // 新しいバージョンあり
@@ -74,10 +74,10 @@ public class Cmd_PeriodMatch2 implements CommandExecutor {
                 Component.text("現在導入されているバージョンよりも新しいバージョンがリリースされています。", NamedTextColor.AQUA)
             );
             Main.sendMessage(sender,
-                Component.text(String.format("導入バージョン: %s", nowVer), NamedTextColor.AQUA)
+                Component.text("導入バージョン: %s".formatted(nowVer), NamedTextColor.AQUA)
             );
             Main.sendMessage(sender,
-                Component.text(String.format("最新バージョン: %s (%s)", latestVer, latestVerSha), NamedTextColor.AQUA)
+                Component.text("最新バージョン: %s (%s)".formatted(latestVer, latestVerSha), NamedTextColor.AQUA)
             );
         } else if (nowVerDate.after(latestVerDate)) {
             // リリースバージョンよりも導入されている方が新しい
@@ -85,10 +85,10 @@ public class Cmd_PeriodMatch2 implements CommandExecutor {
                 Component.text("現在導入されているバージョンは最新です。(※)", NamedTextColor.AQUA)
             );
             Main.sendMessage(sender,
-                Component.text(String.format("導入バージョン: %s", nowVer), NamedTextColor.AQUA)
+                Component.text("導入バージョン: %s".formatted(nowVer), NamedTextColor.AQUA)
             );
             Main.sendMessage(sender,
-                Component.text(String.format("最新バージョン: %s (%s)", latestVer, latestVerSha), NamedTextColor.AQUA)
+                Component.text("最新バージョン: %s (%s)".formatted(latestVer, latestVerSha), NamedTextColor.AQUA)
             );
         }
 
@@ -104,7 +104,7 @@ public class Cmd_PeriodMatch2 implements CommandExecutor {
         }
         for (String commit : commits) {
             Main.sendMessage(sender,
-                Component.text(String.format("- %s", commit), NamedTextColor.GREEN)
+                Component.text("- %s".formatted(commit), NamedTextColor.GREEN)
             );
         }
         return true;

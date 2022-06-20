@@ -112,7 +112,7 @@ public class Task_MatchEnd extends BukkitRunnable {
 
             if (rankingSecs.contains(matchTime)) {
                 Main.broadcast(Component.text(
-                    String.format("順位: %d位", ranking), NamedTextColor.GREEN));
+                    "順位: %d位".formatted(ranking), NamedTextColor.GREEN));
                 Main.broadcast(Component.join(JoinConfiguration.noSeparators(),
                     Component.text("ランキングはこちらからご覧ください: ", NamedTextColor.GREEN),
                     Component.text("https://jaoafa.com/data/ranking/periodmatch/" + matchTime)
@@ -134,13 +134,13 @@ public class Task_MatchEnd extends BukkitRunnable {
                 "データベースサーバに接続できなかったか、操作に失敗しました。開発部にお問い合わせください。", NamedTextColor.GREEN
             ));
             Main.broadcast(Component.text(
-                String.format("%d - %s", e.getErrorCode(), e.getMessage()), NamedTextColor.GREEN
+                "%d - %s".formatted(e.getErrorCode(), e.getMessage()), NamedTextColor.GREEN
             ));
             Main.broadcast(Component.text(
-                String.format("successCount: %d / failureCount: %d / matchTime: %d", successCount, failureCount, matchTime), NamedTextColor.GREEN
+                "successCount: %d / failureCount: %d / matchTime: %d".formatted(successCount, failureCount, matchTime), NamedTextColor.GREEN
             ));
             Main.broadcast(Component.text(
-                String.format("startTime: %d / endTime: %d", startTime, endTime), NamedTextColor.GREEN
+                "startTime: %d / endTime: %d".formatted(startTime, endTime), NamedTextColor.GREEN
             ));
             e.printStackTrace();
         }
