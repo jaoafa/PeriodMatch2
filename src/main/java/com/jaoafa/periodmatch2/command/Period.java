@@ -27,7 +27,7 @@ public record Period(JavaPlugin plugin) implements CommandExecutor {
                     Component.text("現在あなたはピリオドマッチを%d秒で行っています。".formatted(pmplayer.getMatchTime()), NamedTextColor.GREEN)
                 );
                 Main.sendMessage(sender,
-                    Component.text("「/. stop」で行っているピリオドマッチを強制終了できます。", NamedTextColor.GREEN)
+                    Component.text("「/. abort」で行っているピリオドマッチを強制終了できます。", NamedTextColor.GREEN)
                 );
                 return true;
             } else if (pmplayer.isWaiting()) {
@@ -38,7 +38,7 @@ public record Period(JavaPlugin plugin) implements CommandExecutor {
                     Component.text("次に「.」と打った瞬間から開始します。", NamedTextColor.GREEN)
                 );
                 Main.sendMessage(sender,
-                    Component.text("「/. stop」で行っているピリオドマッチを強制終了できます。", NamedTextColor.GREEN)
+                        Component.text("「/. abort」で行っているピリオドマッチを強制終了できます。", NamedTextColor.GREEN)
                 );
                 return true;
             }
@@ -57,19 +57,19 @@ public record Period(JavaPlugin plugin) implements CommandExecutor {
             );
             return true;
         } else if (args.length == 1) {
-            if (args[0].equalsIgnoreCase("stop")) {
+            if (args[0].equalsIgnoreCase("stop") || args[0].equalsIgnoreCase("abort")) {
                 pmplayer.forceEnd();
                 return true;
             } else if (isNumber(args[0])) {
                 if (pmplayer.isPerioding()) {
                     Main.sendMessage(sender,
-                        Component.text("現在あなたはピリオドマッチを実施中です。強制終了するには「/. stop」を実行してください。", NamedTextColor.GREEN)
+                            Component.text("現在あなたはピリオドマッチを実施中です。強制終了するには「/. abort」を実行してください。", NamedTextColor.GREEN)
                     );
                     return true;
                 }
                 if (pmplayer.isWaiting()) {
                     Main.sendMessage(sender,
-                        Component.text("現在あなたはピリオドマッチを待機中です。強制終了するには「/. stop」を実行してください。", NamedTextColor.GREEN)
+                            Component.text("現在あなたはピリオドマッチを待機中です。強制終了するには「/. abort」を実行してください。", NamedTextColor.GREEN)
                     );
                     return true;
                 }
@@ -101,7 +101,7 @@ public record Period(JavaPlugin plugin) implements CommandExecutor {
             Component.text("10秒(/. 10)・60秒(/. 60)・300秒(/. 300)", NamedTextColor.GREEN)
         );
         Main.sendMessage(sender,
-            Component.text("/. stop: 既に開始しているピリオドマッチを強制終了します。", NamedTextColor.GREEN)
+                Component.text("/. abort: 既に開始しているピリオドマッチを強制終了します。", NamedTextColor.GREEN)
         );
         return true;
     }
